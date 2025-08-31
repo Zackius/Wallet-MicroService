@@ -97,21 +97,6 @@ Swagger provides:
 
 > 💡 **Primary Documentation**: Use Swagger UI for complete API documentation, testing, and examples. All endpoint details, schemas, and validation rules are documented there.
 
-## ⚙️ Configuration
-
-### Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DB_HOST` | `jdbc:postgresql://localhost:5432/wallet` | Database connection URL |
-| `DB_USERNAME` | `zackius` | Database username |
-| `DB_PASSWORD` | `zackius` | Database password |
-| `SPRING_RABBITMQ_HOST` | `localhost` | RabbitMQ host |
-| `SPRING_RABBITMQ_PORT` | `5672` | RabbitMQ port |
-| `SPRING_RABBITMQ_USERNAME` | `guest` | RabbitMQ username |
-| `SPRING_RABBITMQ_PASSWORD` | `guest` | RabbitMQ password |
-| `RABBIT_QUEUES_COLLECTION_LEDGER_REQUESTS` | `collection.ledger.request.v1` | Collection queue name |
-| `RABBIT_QUEUES_SPENDING_LEDGER_REQUESTS` | `spending.ledger.request.v1` | Spending queue name |
 
 ### Application Profiles
 
