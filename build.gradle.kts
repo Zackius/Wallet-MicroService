@@ -25,7 +25,7 @@ repositories {
 val mapstructVersion = "1.5.5.Final"
 val tsidCreatorVersion = "5.2.0"
 val commonsLangVersion = "3.12.0"
-val springdocVersion = "2.1.0"
+val springdocVersion = "2.7.0"
 val lettuceVersion = "6.5.2.RELEASE"
 val okHttpVersion = "5.0.0-alpha.14"
 val hibernateVersion = "6.0.6.Final"

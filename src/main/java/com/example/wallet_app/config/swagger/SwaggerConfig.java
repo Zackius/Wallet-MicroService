@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
         List<Server> servers = new ArrayList<>();
         if (activeProfile.equals("local")) {
-            servers.add(new Server().url("http://localhost:8080"));
+            servers.add(new Server().url("http://localhost:8065"));
 
         } else {
             servers.add(new Server().url(baseUrl));

@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: wallet-postgres
+    environment:
+      POSTGRES_DB: wallet
+      POSTGRES_USER: zackius
+      POSTGRES_PASSWORD: zackius
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zackius -d wallet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wallet-network
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: wallet-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI port
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      - wallet-network
+
+  # Spring Boot Application
+  wallet-app:
+    build: .
+    container_name: wallet-app
+    environment:
+      # Database configuration
+      DB_HOST: jdbc:postgresql://postgres:5432/wallet
+      DB_USERNAME: zackius
+      DB_PASSWORD: zackius
+
+      # RabbitMQ configuration
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+      # Queue configurations
+      RABBIT_QUEUES_COLLECTION_LEDGER_REQUESTS: collection.ledger.request.v1
+      RABBIT_QUEUES_SPENDING_LEDGER_REQUESTS: spending.ledger.request.v1
+
+      # Application configuration
+      SPRING_ACTIVE_PROFILE: docker
+      BASE_URL: http://localhost:8065
+    ports:
+      - "8065:8065"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8065/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - wallet-network
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+networks:
+  wallet-network:
+    driver: bridge

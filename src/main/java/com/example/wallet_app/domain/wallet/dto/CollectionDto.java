@@ -20,5 +20,7 @@ public class CollectionDto {
 
     @NotBlank(message = "Key id is required")
     private String key;
+    @NotBlank(message = "Transaction id is required")
+    private String referenceNumber;
 
 }
