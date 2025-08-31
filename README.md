@@ -61,7 +61,7 @@ A comprehensive Spring Boot microservice for managing customer wallet balances a
 
 ### 1. Clone and Setup
 ```bash
-git clone <repository-url>
+git clone git@github.com:Zackius/Wallet-MicroService.git
 cd wallet-app
 chmod +x setup.sh && ./setup.sh
 ```
