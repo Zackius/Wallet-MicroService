@@ -21,6 +21,8 @@ public class SpendingDto {
     private String key;
     @NotBlank(message="Mode is required")
     private String mode;
+    @NotBlank(message="Transaction Id is required")
+    private String referenceNumber;
 
 }
 

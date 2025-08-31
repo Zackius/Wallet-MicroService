@@ -31,4 +31,7 @@ public class Constants {
 
     public static final LocalDateTime now = LocalDateTime.now();
 
+    public static final String CREDIT ="CREDIT";
+    public static final String DEBIT ="DEBIT";
+
 }
